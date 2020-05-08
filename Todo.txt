@@ -1,0 +1,5 @@
+// Implement hunger somehow
+// Improve the cleaning routines
+// Feedback lights and emergency light
+// Senescence
+// Sounds
