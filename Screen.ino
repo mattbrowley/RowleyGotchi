@@ -68,6 +68,11 @@ void writeScreen(){
         writeWork();
         writeCursor();
         break;
+      case 5: // Diagnostic screen
+        lcd.setCursor(0,0);
+        lcd.print(analogRead(BathPin));
+        lcd.print("     ");
+        break;
     }
   }
 }

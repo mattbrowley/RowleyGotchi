@@ -16,7 +16,7 @@ void updateEggStats(){
 }
 
 void updateHatchedStats(){
-  if(count % EnergyCycles ==0){
+  if(count % EnergyCycles == 0){
     energy = energy + 1;
   }
   checkEnergyLimits();
@@ -26,6 +26,7 @@ void updateHatchedStats(){
   checkHappinessLimits();
   health = health + dhealth;
   checkHealthLimits();
+  updateLEDs();
   if (dhappiness < -1){
     dhappiness = dhappiness + 2;
   }else if (dhappiness > 1){
@@ -106,6 +107,7 @@ void updateAge(){
 void updateCleanliness(){
   if (count % CleanBodyCycles == 0){
     cleanBody = false;
+    bathBrushes = 0;
   }
   if (count % (CleanDiaperCycles * age * age) == 0){
     cleanDiaper = false;

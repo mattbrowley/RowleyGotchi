@@ -1,114 +1,12 @@
 void readButtons(){
-  if(!digitalRead(BathPin)){
-    if (!cleanBody){
-      cleanBody = true;
-      dhappiness = dhappiness + 40;
-    } else{
-      dhappiness = dhappiness - 1;
-    }    
-  }
-  if(!digitalRead(DiaperPin)){
-    if (!cleanDiaper){
-      cleanDiaper = true;
-      dhappiness = dhappiness + 40;
-    } else{
-      dhappiness = dhappiness - 1;
-    }
-  }  
-  if(!digitalRead(SelectPin) & millis()>lastPress+DebounceDelay){
-    switch (screen) {
-      case 0: // Default screen shows bouncing Rowleygotchi
-        if(age>0){
-          screen = 1;
-          selection = 0;
-        } else {
-          writeEgg();
-        }
-        break; 
-      case 1: // Main menu shows food, fun, and work
-        selectMenu();
-        break;
-      case 2: // Food menu
-        selectFood();
-        break;
-      case 3: // Fun menu
-        selectFun();
-        break;
-      case 4: // Work menu
-        selectWork();
-        break;
-    }
-    refreshScreen=true;
-    lastPress = millis();
-  }
-  if(!digitalRead(BackPin) & millis()>lastPress+DebounceDelay){
-    switch (screen) {
-      case 0: // Default screen shows bouncing Rowleygotchi 
-        break; 
-      case 1: // Main menu shows food, fun, and work
-        screen = 0;
-        break;
-      case 2: // Food menu
-        screen = 1;
-        break;
-      case 3: // Fun menu
-        screen = 1;
-        break;
-      case 4: // Work menu
-        screen = 1;
-        break;
-    }
-    selection=0;
-    refreshScreen=true;
-    lastPress = millis();
-  }
-  if(!digitalRead(LeftPin)){
-    if (selection==0){
-    } else if (selection==1){
-      selection = 0;
-      refreshScreen=true;
-    } else if(selection==2){
-    } else{
-      selection = 2;
-      refreshScreen=true;
-    }
-    
-  }
-  if(!digitalRead(UpPin)){
-    if (selection==0){
-    } else if (selection==1){      
-    } else if(selection==2){
-      selection = 0;
-      refreshScreen=true;
-    } else{
-      selection = 1;
-      refreshScreen=true;
-    }   
-  }
-  if(!digitalRead(RightPin)){
-    if (selection==0){
-      selection = 1;
-      refreshScreen=true;
-    } else if (selection==1){ 
-      
-    } else if(selection==2 & screen !=1){
-      selection = 3;
-      refreshScreen=true;
-    } else{
-    }
-  }
-  if(!digitalRead(DownPin)){
-    if (selection==0){
-      selection = 2;
-      refreshScreen=true;
-    } else if (selection==1 & screen !=1){ 
-      selection = 3;
-      refreshScreen=true;
-    } else if(selection==2){
-      
-    } else{
-    }
-  }
+  readDiaper();
+  readBathing();
+  readSelect();  
+  readBack();
+  readLeft();
+  readUp();
+  readRight();
+  readDown();  
 }
 
 void selectMenu(){
@@ -185,6 +83,142 @@ void doActivity(int index){
     energy = energy + energies[index];
     dhappiness = dhappiness + happinesses[index] * preferences[index];
     dhealth = dhealth + healths[index];
+  }  
+}
+
+void readBathing(){
+  if (digitalRead(BathPin)){
+    if (!bathOn){
+      bathOn = true;
+      if (!cleanBody & bathBrushes > 5){
+        cleanBody = true;
+        dhappiness = dhappiness + 40;
+      }
+    }
+  } else{
+    if (bathOn){
+      bathOn = false;
+      bathBrushes = bathBrushes + 1;
+      if (cleanBody){
+        dhappiness = dhappiness - 3;
+      }
+    }
   }
-  
+}
+
+void readDiaper(){
+  if(!digitalRead(DiaperPin)){
+    if (!diaperOn){
+      if (!cleanDiaper){
+        cleanDiaper = true;
+        dhappiness = dhappiness + 40;
+      } else{
+        dhappiness = dhappiness - 5;
+      }
+      diaperOn = true;
+    }
+  } else {
+    diaperOn = false;
+  }
+}
+
+void readSelect(){
+  if(!digitalRead(SelectPin) & millis()>lastPress+DebounceDelay){
+    switch (screen) {
+      case 0: // Default screen shows bouncing Rowleygotchi
+        if(age>0){
+          screen = 1;
+          selection = 0;
+        } else {
+          writeEgg();
+        }
+        break; 
+      case 1: // Main menu shows food, fun, and work
+        selectMenu();
+        break;
+      case 2: // Food menu
+        selectFood();
+        break;
+      case 3: // Fun menu
+        selectFun();
+        break;
+      case 4: // Work menu
+        selectWork();
+        break;
+    }
+    refreshScreen=true;
+    lastPress = millis();
+  }
+}
+
+void readBack(){
+  if(!digitalRead(BackPin) & millis()>lastPress+DebounceDelay){
+    switch (screen) {
+      case 0: // Default screen shows bouncing Rowleygotchi 
+        break; 
+      case 1: // Main menu shows food, fun, and work
+        screen = 0;
+        break;
+      case 2: // Food menu
+        screen = 1;
+        break;
+      case 3: // Fun menu
+        screen = 1;
+        break;
+      case 4: // Work menu
+        screen = 1;
+        break;
+    }
+    selection=0;
+    refreshScreen=true;
+    lastPress = millis();
+  }
+}
+
+void readLeft(){
+  if(!digitalRead(LeftPin)){
+    if (selection==1){
+      selection = 0;
+      refreshScreen=true;
+    } else if(selection==3){
+      selection = 2;
+      refreshScreen=true;
+    }    
+  }
+}
+
+void readUp(){
+  if(!digitalRead(UpPin)){
+    if (selection==2){
+      selection = 0;
+      refreshScreen=true;
+    } else if (selection==3){
+      selection = 1;
+      refreshScreen=true;
+    }   
+  }
+}
+
+void readRight(){
+   if(!digitalRead(RightPin)){
+    if (selection==0){
+      selection = 1;
+      refreshScreen=true;
+    } else if(selection==2 & screen !=1){
+      selection = 3;
+      refreshScreen=true;
+    }
+  }
+}
+
+void readDown(){
+  if(!digitalRead(DownPin)){
+    if (selection==0){
+      selection = 2;
+      refreshScreen=true;
+    } else if (selection==1 & screen !=1){ 
+      selection = 3;
+      refreshScreen=true;
+    }
+  }
 }
