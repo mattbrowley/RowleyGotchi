@@ -1,5 +1,7 @@
-// Implement hunger somehow
-// Improve the cleaning routines
-// Feedback lights and emergency light
-// Senescence
-// Sounds
+Implement hunger somehow
+Senescence
+Sounds
+Accelerometer
+Temperature with dedicated temp sensor
+Battery management
+Light sensitivity / diurnal cycles

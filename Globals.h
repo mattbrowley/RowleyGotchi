@@ -22,21 +22,25 @@
 #define MaxHealth 10000
 #define MaxHappiness 10000
 #define MaxEnergy 200
-#define StatusCycles 100
-#define BounceCycles 150
-#define EnergyCycles 100
+#define MaxHunger 100
+#define StatusFrames 50
+#define BounceFrames 150
+#define EnergyCycles 2
 #define CleanBodyCycles 13000
 #define CleanDiaperCycles 8000
 #define YearsCycles 60000
-#define HatchCycles 500
+
 
 unsigned long count = 0;
+unsigned long frames = 0;
 unsigned long days = 0;
 const String animalTypes[] = {"Fish", "Lizard", "Bird", "Koala", "Frog", "Sloth", "Dog", "Cat", "Turtle", "Mouse"};
-int screen = 0; // Set this to 5 for diagnostics, 0 for regular operation
+int screen = 0; // Set this to 6 for diagnostics, 0 for regular operation
 int selection = 0;
 bool refreshScreen = false;
 bool statsPressed = false;
+bool selectPressed = false;
+bool backPressed = false;
 unsigned long lastPress;
 int xpos = 1;
 int ypos = 0;
@@ -47,6 +51,9 @@ bool cleanBody = false;
 bool cleanDiaper = false;
 bool diaperOn = true;
 bool bathOn = false;
+bool cuddled = false;
+bool tossed = false;
+bool light = false;
 int hunger = 0;
 int energy = 0;
 int health = 0;
@@ -56,7 +63,12 @@ int dhealth = 0;
 int dhappiness = 0;
 int incubation = 0;
 int bathBrushes = 0;
+int incubationCycles = 5;
 
 int preferences[] = {1,1,1,1,1,1,1,1,1,1,1,1};
 
+int16_t ax, ay, az;
+int16_t gx, gy, gz;
+
+int16_t temperature;
 #endif

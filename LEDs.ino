@@ -1,5 +1,11 @@
 void updateLEDs() {
-  if (dhappiness < -30 | dhealth < -30 | health < 1000 | happiness < 1000) {
+  if (age == 0) {
+    clearLEDs();
+    return;
+  }
+  if ((dhappiness < -30 | dhealth < -30 | health < 1000 | happiness < 1000) & (frames % 60 > 30)) {
+    sendByte(1);
+  } else if (!alive) {
     sendByte(1);
   } else {
     sendByte(0);

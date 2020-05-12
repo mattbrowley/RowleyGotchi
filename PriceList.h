@@ -5,42 +5,42 @@
 
 #define DonutPrice -10
 #define DonutEnergy -5
-#define DonutHappiness 20
-#define DonutHealth -10
+#define DonutHappiness 10
+#define DonutHealth -3
 
 #define NachosPrice -20
 #define NachosEnergy 0
-#define NachosHappiness 15
+#define NachosHappiness 5
 #define NachosHealth 5
 
 #define ApplesPrice -10
 #define ApplesEnergy 5
-#define ApplesHappiness 5
+#define ApplesHappiness 3
 #define ApplesHealth 10
 
 #define ScrapsPrice 0
 #define ScrapsEnergy 0
-#define ScrapsHappiness -5
+#define ScrapsHappiness -3
 #define ScrapsHealth 5
 
 #define SwingPrice 0
 #define SwingEnergy -20
-#define SwingHappiness 10
+#define SwingHappiness 5
 #define SwingHealth 5
 
 #define WalkPrice 0
 #define WalkEnergy -20
-#define WalkHappiness 5
+#define WalkHappiness 3
 #define WalkHealth 10
 
 #define BalletPrice -10
 #define BalletEnergy -30
-#define BalletHappiness 20
+#define BalletHappiness 10
 #define BalletHealth 10
 
 #define FetchPrice 0
 #define FetchEnergy -30
-#define FetchHappiness 10
+#define FetchHappiness 5
 #define FetchHealth 10
 
 #define DeliverPrice 20
@@ -50,7 +50,7 @@
 
 #define CircusPrice 10
 #define CircusEnergy -30
-#define CircusHappiness 5
+#define CircusHappiness 3
 #define CircusHealth 5
 
 #define DigPrice 20

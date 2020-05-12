@@ -1,46 +1,41 @@
 void updateStats(){
   if (age==0){
     updateEggStats();
-  } else{
+  } else if(alive){
     updateHatchedStats();
   }
 }
 
 void updateEggStats(){
-  if (incubation > HatchCycles){
+  checkIncubation();
+  if (incubation > incubationCycles){
     age = 1;
     count = 0;
+    dhappiness = 0;
+    dhealth = 0;
     cleanBody = false;
     cleanDiaper = false;
+    refreshScreen = true;
+    checkCleanliness();
+    //updateLEDs();
   }
 }
 
-void updateHatchedStats(){
+void updateHatchedStats(){  
+  count = count + 1; 
+  happiness = happiness + dhappiness;
+  checkHappinessLimits();
+  health = health + dhealth;
+  checkHealthLimits();
+  decayChanges();
   if(count % EnergyCycles == 0){
     energy = energy + 1;
   }
   checkEnergyLimits();
   checkHunger();
-  checkCleanliness();
-  happiness = happiness + dhappiness;
-  checkHappinessLimits();
-  health = health + dhealth;
-  checkHealthLimits();
-  updateLEDs();
-  if (dhappiness < -1){
-    dhappiness = dhappiness + 2;
-  }else if (dhappiness > 1){
-    dhappiness = dhappiness -2;
-  } else {
-    dhappiness = 0;
-  }
-  if (dhealth < -1){
-    dhealth = dhealth + 2;
-  } else if (dhealth > 1){
-    dhealth = dhealth - 2;
-  } else {
-    dhealth = 0;
-  }  
+  checkCleanliness();  
+  checkCuddled();
+  //updateLEDs();  
   updateCleanliness();
   updateAge();
   if (millis()<lastPress){
@@ -69,7 +64,14 @@ void checkHappinessLimits(){
 
 void checkHealthLimits(){
   if (health <= 0){
+    refreshScreen = true;
     alive = false;
+    money = 0;
+    energy = 0;
+    health = 0;
+    dhealth = -1;
+    dhappiness = -1;
+    screen = 5;
   }
   if (health > MaxHealth){
     health = MaxHealth;
@@ -91,7 +93,7 @@ void checkEnergyLimits(){
   if (energy>MaxEnergy){
     energy = MaxEnergy;
   }
-  if (energy < 0){
+  if (energy == 0){
     dhealth = dhealth - 1;
     dhappiness = dhappiness - 1;
   }
@@ -112,4 +114,32 @@ void updateCleanliness(){
   if (count % (CleanDiaperCycles * age * age) == 0){
     cleanDiaper = false;
   }
+}
+
+void checkIncubation(){
+  if (cuddled){
+    incubation = incubation + 1;
+  }
+}
+void checkCuddled(){
+  if (cuddled){
+    dhappiness = dhappiness + 1;
+  }
+}
+
+void decayChanges(){
+  if (dhappiness < -1){
+    dhappiness = dhappiness + 2;
+  }else if (dhappiness > 1){
+    dhappiness = dhappiness -2;
+  } else {
+    dhappiness = 0;
+  }
+  if (dhealth < -1){
+    dhealth = dhealth + 2;
+  } else if (dhealth > 1){
+    dhealth = dhealth - 2;
+  } else {
+    dhealth = 0;
+  }  
 }

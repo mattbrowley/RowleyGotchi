@@ -1,5 +1,6 @@
 #include "Globals.h"
 #include "PriceList.h"
+
 void setup() {
   setupLCD();
 
@@ -8,29 +9,39 @@ void setup() {
   randomSeed(analogRead(0));
   newCritter();
   setupPins();
+  ax = 1;
+  ay = 2;
+  az = 3;
+  initializeAccelerometer();
 }
 
 void loop() {
 
-  count = count + 1;
-  if (count % StatusCycles == 0) {
+  frames = frames + 1;
+  if (frames % StatusFrames == 0) {   
     updateStats();
   }
   readTemp();
   readButtons();
+  readAcceleration();
   writeScreen();
+  updateLEDs();
 }
 
 void newCritter() {
-  
+
   health = MaxHealth / 2;
   happiness = MaxHappiness / 2;
   hunger = 10;
-  money = 10;
+  money = 0;
+  dhealth = 0;
+  dhappiness = 0;
   type = random(0, 10);
   alive = true;
   count = 0;
-  incubation = random(-500, 0);
+  incubation = 0;
+  screen = 0;
+  incubationCycles = random(5, 5);
   age = 0;
   cleanBody = true;
   cleanDiaper = true;

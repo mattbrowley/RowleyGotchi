@@ -3,10 +3,6 @@
 
 const uint8_t heart[8] = {0x0,0xa,0x1f,0x1f,0xe,0x4,0x0};
 const uint8_t smile[8] = {0x0,0xa,0xa,0xa,0x0,0x11,0xe};
-const uint8_t lightning[8] = {0x00,0x1E,0x04,0x08,0x1F,0x02,0x04,0x08};
-//const uint8_t lightning[8] = {0x1F,0x02,0x04,0x08,0x1F,0x02,0x04,0x08};
-//const uint8_t lightning[8] = {0x01,0x1E,0x04,0x09,0x1E,0x04,0x08,0x10};
-//const uint8_t lightning[8] = {0x01,0x1E,0x04,0x08,0x1F,0x02,0x04,0x8};
 const uint8_t lstink1[8] = {0x12,0x0A,0x09,0x04,0x04,0x03,0x00,0x00};
 const uint8_t lstink2[8] = {0x14,0x12,0x0A,0x09,0x04,0x04,0x03,0x00};
 const uint8_t rstink1[8] = {0x09,0x09,0x0A,0x12,0x02,0x0C,0x10,0x00};
@@ -68,15 +64,32 @@ void writeScreen(){
         writeWork();
         writeCursor();
         break;
-      case 5: // Diagnostic screen
+      case 5: // Dead
+        writeDead();
+        break;
+      case 6: // Diagnostic screen
         lcd.setCursor(0,0);
-        lcd.print(analogRead(BathPin));
-        lcd.print("     ");
+        lcd.print(gx);
+        lcd.print("    ");
+        lcd.setCursor(8,0);
+        lcd.print(gy);
+        lcd.print("    ");
+        lcd.setCursor(0,1);
+        lcd.print(gz);
+        lcd.print("    ");
+        lcd.setCursor(8,1);
+        lcd.print(accelgyro.getTemperature()  / 340.0 + 36.53);
         break;
     }
   }
 }
 
+void writeDead(){
+  lcd.setCursor(1,0);
+  lcd.print("Pet Has Died!");
+  lcd.setCursor(1,1);
+  lcd.print("Select For New");
+}
 
 void writeMenu(){
   lcd.setCursor(1,0);
@@ -121,7 +134,7 @@ void writeWork(){
 }
 
 void writeName(){
-  if (count%BounceCycles==0){
+  if (frames%BounceFrames==0){
     refreshScreen = true;
     if(random(0,3)==1){
       if (ypos == 0){
@@ -138,8 +151,8 @@ void writeName(){
       }      
     }
   }  
-  if(!cleanBody){
-    if(count%10==0){
+  if(!cleanBody){ // Write left stink lines
+    if(frames%10==1){
       lcd.setCursor(xpos-1,ypos);
       if (random(0,2)==0){
         lcd.write(2);
@@ -150,6 +163,11 @@ void writeName(){
   }
   lcd.setCursor(xpos,ypos);
   if (age<1){
+    if(cuddled){
+      lcd.setCursor(12,0);
+      lcd.print("Warm ");
+      lcd.setCursor(xpos,ypos);
+    }
     lcd.print("Egg");
     return;
   }
@@ -162,7 +180,7 @@ void writeName(){
   }
   lcd.print(animalTypes[type]);
   if(!cleanBody){
-    if(count%10==0){
+    if(frames%10==1){
       if (random(0,2)==0){
         lcd.write(4);
       } else {
@@ -172,7 +190,7 @@ void writeName(){
   }
   if(!cleanDiaper){
     lcd.setCursor(15,1);
-     if(count%10==0){
+     if(frames%10==1){
       if (random(0,2)==0){
         lcd.write(6);
       } else {
